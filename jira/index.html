@@ -3,56 +3,11 @@
 
 <head>
     <meta charset="utf-8">
-    <title></title>
-    <script type="text/javascript">
-        function d() {
-            var text = getQueryVariable(
-              urlParse(
-                getQueryVariable(
-                  urlParse(document.querySelector('#url').value).query, 'fromURI')
-                ).query, 'RelayState'
-              );
-            document.querySelector('#urlResult').innerHTML = text;
-            window.getSelection().removeAllRanges();
-            setTimeout(function() {
-                var copyTextarea = document.querySelector('#urlResult');
-                var range = document.createRange();
-                range.selectNode(copyTextarea);
-                window.getSelection().addRange(range);
-                try {
-                    var successful = document.execCommand('copy');
-                    var msg = successful ? 'successful' : 'unsuccessful';
-                    console.log('Copying text command was ' + msg);
-                } catch (err) {
-                    console.log('Oops, unable to copy');
-                }
-                window.getSelection().removeAllRanges();
-                document.querySelector('#url').value = '';
-            }, 10)
-
-            return text;
-        }
-
-        function urlParse(url){
-          var parser = document.createElement('a');
-          parser.href = url;
-          parser.query = parser.search.substr(1);
-          return parser;
-
-        }
-
-        function getQueryVariable(query, variable) {
-            var query = query;
-            var vars = query.split('&');
-            for (var i = 0; i < vars.length; i++) {
-                var pair = vars[i].split('=');
-                if (decodeURIComponent(pair[0]) == variable) {
-                    return decodeURIComponent(pair[1]);
-                }
-            }
-            console.log('Query variable %s not found', variable);
-        }
-    </script>
+    <title>Helpers</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+    <script type="text/javascript" >hljs.initHighlightingOnLoad();</script>
+    <script type="text/javascript" src="scripts/index.js"></script>
     <style media="screen">
         body {
             font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
@@ -62,13 +17,27 @@
 </head>
 
 <body>
+<div>
+    <h3>Jira URL Helper</h3>
     <p>
-        <label for="url">Ingrese la URL</label>
+        <label for="url">Jira URL to parse and be copied</label>
         <input type="text" name="url" value="" id="url" onkeyup="d()">
     </p>
-    <div id="urlResult">
+    <div id="urlResult"></div>
 
-    </div>
+</div>
+
+
+<div>
+    <h3>Query String 2 JSON</h3>
+    <p>
+        <label for="queryString">Jira URL to parse and be copied</label>
+        <input type="text" name="queryString" value="" id="queryString" onkeyup="q2j()" />
+    </p>
+    <pre><code class="JSON" id="q2jResult"></code></pre>
+</div>
+
+
 </body>
 
 </html>
